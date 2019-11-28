@@ -7,6 +7,7 @@
           groups:
             - border
         when: "'eth0' in ansible_interfaces"
+        changed_when: False
 
   - hosts: localhost
     become: true
@@ -53,18 +54,21 @@
           cmd: "echo $((16#{{ node_address_1 }}))"
           executable: /bin/bash
         register: node_address_1_conv
+        changed_when: False
       
       - name: Convert Mac to IP (2)
         shell: 
           cmd: "echo $((16#{{ node_address_2 }}))"
           executable: /bin/bash
         register: node_address_2_conv
+        changed_when: False
 
       - name: Convert Mac to IP (3)
         shell: 
           cmd: "echo $((16#{{ node_address_3 }}))"
           executable: /bin/bash
         register: node_address_3_conv
+        changed_when: False
 
       - name: Set IPv4 address for bat0
         lineinfile:
