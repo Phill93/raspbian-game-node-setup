@@ -1,13 +1,32 @@
 ---
   - hosts: all
+    tasks:
+      - name: Detect if border node
+        add_host:
+          name: {{ inventory_hostname }}
+          groups:
+            - border
+        when: eth0 in ansible_interfaces
+
+  - hosts: all
     become: true
     tags:
       - hostname
     tasks:
-      - name: Get hostnames
+      - name: Get current hostname
         set_fact:
           old_hostname: "{{ ansible_hostname }}"
-          new_hostname: "node-{{ ansible_default_ipv4.macaddress[:-8] | replace(':', '') }}"
+
+      - name: Generate new hostname (inner-node)
+        set_fact:
+          new_hostname: "node-i-{{ ansible_default_ipv4.macaddress[-8:] | replace(':', '') }}"
+        when: border not in group_names
+
+      - name: Generate new hostname (border-node)
+        set_fact:
+          new_hostname: "node-b-{{ ansible_default_ipv4.macaddress[-8:] | replace(':', '') }}"
+        when: border in group_names
+        
       - name: Set hostname (hostname)
         hostname:
           name: "{{ new_hostname }}"
@@ -21,6 +40,22 @@
   - hosts: all
     become: true
     tags:
+      - network
+    vars:
+      node_address_1: "0x{{ ansible_default_ipv4.macaddress[-8:-6] }}"
+      node_address_2: "0x{{ ansible_default_ipv4.macaddress[-5:-3] }}"
+      node_address_3: "0x{{ ansible_default_ipv4.macaddress[-2:] }}"
+      node_address: "10.{{ node_address_1 }}.{{ node_address_2 }}.{{ node_address_3 }}"
+    tasks:
+      - name: Set IPv4 address for bat0
+        lineinfile:
+          dest: /etc/network/interfaces.d/bat0
+          regexp: "^  # IPv4 Placeholder"
+          line: "  up ip address add {{ node_address }}/{{ subnet }} dev $IFACE"
+
+  - hosts: all
+    become: true
+    tags:
       - vernemq
     tasks:
       - name: Configure vernemq
@@ -28,8 +63,23 @@
           src: vernemq.conf.j2
           dest: /etc/vernemq/vernemq.conf
           owner: root
-          group: root
-          mode: 0644
+          group: vernemq
+          mode: 0640
         vars:
           node_name: "vernemq@{{ ansible_bat0.ipv4.address }}"
           cookie: "Kekse"
+
+  - hosts: border
+    become: true
+    tags:
+      - dhcpd
+    tasks:
+      - name: Configure dhcpd
+        template:
+          src: dhcpd.conf.j2
+          dest: /etc/dhcp/dhcpd.conf
+          owner: root
+          group: root
+          mode: 0644
+        vars:
+          blubb: []
