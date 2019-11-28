@@ -20,12 +20,12 @@
       - name: Generate new hostname (inner-node)
         set_fact:
           new_hostname: "node-i-{{ ansible_default_ipv4.macaddress[-8:] | replace(':', '') }}"
-        when: border not in group_names
+        when: "'border' not in group_names"
 
       - name: Generate new hostname (border-node)
         set_fact:
           new_hostname: "node-b-{{ ansible_default_ipv4.macaddress[-8:] | replace(':', '') }}"
-        when: border in group_names
+        when: "'border' in group_names"
         
       - name: Set hostname (hostname)
         hostname:
