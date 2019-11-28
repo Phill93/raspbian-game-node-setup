@@ -79,7 +79,7 @@
     tasks:
       - name: Configure vernemq
         template:
-          src: vernemq.conf.j2
+          src: files/vernemq.conf.j2
           dest: /etc/vernemq/vernemq.conf
           owner: root
           group: vernemq
@@ -95,7 +95,7 @@
     tasks:
       - name: Configure dhcpd
         template:
-          src: dhcpd.conf.j2
+          src: files/dhcpd.conf.j2
           dest: /etc/dhcp/dhcpd.conf
           owner: root
           group: root
