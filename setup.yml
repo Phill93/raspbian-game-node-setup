@@ -20,12 +20,12 @@
 
       - name: Generate new hostname (inner-node)
         set_fact:
-          new_hostname: "node-i-{{ ansible_wlan0_.macaddress[-8:] | replace(':', '') }}"
+          new_hostname: "node-i-{{ ansible_wlan0.macaddress[-8:] | replace(':', '') }}"
         when: "'border' not in group_names"
 
       - name: Generate new hostname (border-node)
         set_fact:
-          new_hostname: "node-b-{{ ansible_wlan0_.macaddress[-8:] | replace(':', '') }}"
+          new_hostname: "node-b-{{ ansible_wlan0.macaddress[-8:] | replace(':', '') }}"
         when: "'border' in group_names"
         
       - name: Set hostname (hostname)
@@ -45,7 +45,7 @@
     vars:
       node_address_1: "{{ ansible_wlan0.macaddress[-8:-6] }}"
       node_address_2: "{{ ansible_wlan0.macaddress[-5:-3] }}"
-      node_address_3: "{{ ansible_wlan0_.macaddress[-2:] }}"
+      node_address_3: "{{ ansible_wlan0.macaddress[-2:] }}"
       node_address: "10.{{ node_address_1_conv.stdout }}.{{ node_address_2_conv.stdout }}.{{ node_address_3_conv.stdout }}"
       subnet: "8"
     tasks:
