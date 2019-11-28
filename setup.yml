@@ -3,7 +3,7 @@
     tasks:
       - name: Detect if border node
         add_host:
-          name: {{ inventory_hostname }}
+          name: "{{ inventory_hostname }}"
           groups:
             - border
         when: eth0 in ansible_interfaces
