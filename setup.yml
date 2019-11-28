@@ -49,15 +49,21 @@
       subnet: "8"
     tasks:
       - name: Convert Mac to IP (1)
-        shell: "echo $((16#{{ node_address_1 }}))"
+        shell: 
+          cmd: "echo $((16#{{ node_address_1 }}))"
+          executable: /bin/bash
         register: node_address_1_conv
       
       - name: Convert Mac to IP (2)
-        shell: "echo $((16#{{ node_address_2 }}))"
+        shell: 
+          cmd: "echo $((16#{{ node_address_2 }}))"
+          executable: /bin/bash
         register: node_address_2_conv
 
       - name: Convert Mac to IP (3)
-        shell: "echo $((16#{{ node_address_3 }}))"
+        shell: 
+          cmd: "echo $((16#{{ node_address_3 }}))"
+          executable: /bin/bash
         register: node_address_3_conv
 
       - name: Set IPv4 address for bat0
