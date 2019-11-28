@@ -46,6 +46,7 @@
       node_address_2: "0x{{ ansible_default_ipv4.macaddress[-5:-3] }}"
       node_address_3: "0x{{ ansible_default_ipv4.macaddress[-2:] }}"
       node_address: "10.{{ node_address_1 }}.{{ node_address_2 }}.{{ node_address_3 }}"
+      subnet: "8"
     tasks:
       - name: Set IPv4 address for bat0
         lineinfile:
