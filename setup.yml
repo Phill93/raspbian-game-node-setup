@@ -42,12 +42,24 @@
     tags:
       - network
     vars:
-      node_address_1: "0x{{ ansible_default_ipv4.macaddress[-8:-6] }}"
-      node_address_2: "0x{{ ansible_default_ipv4.macaddress[-5:-3] }}"
-      node_address_3: "0x{{ ansible_default_ipv4.macaddress[-2:] }}"
-      node_address: "10.{{ node_address_1 }}.{{ node_address_2 }}.{{ node_address_3 }}"
+      node_address_1: "{{ ansible_default_ipv4.macaddress[-8:-6] }}"
+      node_address_2: "{{ ansible_default_ipv4.macaddress[-5:-3] }}"
+      node_address_3: "{{ ansible_default_ipv4.macaddress[-2:] }}"
+      node_address: "10.{{ node_address_1_conv.stdout }}.{{ node_address_2_conv.stdout }}.{{ node_address_3_conv.stdout }}"
       subnet: "8"
     tasks:
+      - name: Convert Mac to IP (1)
+        shell: "echo $((16#{{ node_address_1 }}))"
+        register: node_address_1_conv
+      
+      - name: Convert Mac to IP (2)
+        shell: "echo $((16#{{ node_address_2 }}))"
+        register: node_address_2_conv
+
+      - name: Convert Mac to IP (3)
+        shell: "echo $((16#{{ node_address_3 }}))"
+        register: node_address_3_conv
+
       - name: Set IPv4 address for bat0
         lineinfile:
           dest: /etc/network/interfaces.d/bat0
