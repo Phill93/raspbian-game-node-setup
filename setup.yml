@@ -1,0 +1,35 @@
+---
+  - hosts: all
+    become: true
+    tags:
+      - hostname
+    tasks:
+      - name: Get hostnames
+        set_fact:
+          old_hostname: "{{ ansible_hostname }}"
+          new_hostname: "node-{{ ansible_default_ipv4.macaddress[:-8] | replace(':', '') }}"
+      - name: Set hostname (hostname)
+        hostname:
+          name: "{{ new_hostname }}"
+      - name: Set hostname (hosts)
+        lineinfile:
+          dest: /etc/hosts
+          regexp: "^(.*){{ old_hostname }}"
+          line: '\1{{ new_hostname }}'
+          backrefs: yes
+
+  - hosts: all
+    become: true
+    tags:
+      - vernemq
+    tasks:
+      - name: Configure vernemq
+        template:
+          src: vernemq.conf.j2
+          dest: /etc/vernemq/vernemq.conf
+          owner: root
+          group: root
+          mode: 0644
+        vars:
+          node_name: "vernemq@{{ ansible_bat0.ipv4.address }}"
+          cookie: "Kekse"
