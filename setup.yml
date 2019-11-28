@@ -75,6 +75,13 @@
           dest: /etc/network/interfaces.d/bat0
           regexp: "^  # IPv4 Placeholder"
           line: "  up ip address add {{ node_address }}/{{ subnet }} dev $IFACE"
+        register: setip
+
+      - name: Restart network
+        service:
+          name: networking
+          state: restarted
+        when: setip.changed
 
   - hosts: localhost
     become: true
