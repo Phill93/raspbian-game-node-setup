@@ -83,6 +83,15 @@
           state: restarted
         when: setip.changed
 
+      - name: Enable (and start) A.L.F.R.E.D. services
+        serice:
+          name: "{{ item }}"
+          state: started
+          enabled: yes
+        with_items:
+          - alfred
+          - batadv-vis
+
   - hosts: localhost
     become: true
     tags:
