@@ -91,6 +91,27 @@
         with_items:
           - alfred
           - batadv-vis
+      
+      - name: Install metadata services
+        copy:
+          src: "files/{{ item }}"
+          dest: "/etc/systemd/system/{{ item }}"
+          owner: root
+          group: root
+          mode: 0644
+        with_items:
+          - update-alfred.service
+          - update-alfred.timer
+      
+      - name: Reread systemd files
+        systemd:
+          daemon_reload: yes
+
+      - name: Enable metadata timer
+        systemd:
+          name: update-alfred.timer
+          state: started
+          enabled: yes
 
   - hosts: localhost
     become: true

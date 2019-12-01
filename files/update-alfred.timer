@@ -1,0 +1,10 @@
+[Unit]
+Description=Timer for the update-alfred.service
+
+[Timer]
+OnBootSec=0min
+OnUnitActiveSec=5min
+Unit=update-alfred.service
+
+[Install]
+WantedBy=timers.target
