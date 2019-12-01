@@ -2,7 +2,7 @@
 Description=Update data about the node in A.L.F.R.E.D.
 
 [Service]
-Type=simple
+Type=oneshot
 ExecStart=/bin/hostname | /usr/sbin/alfred -s 64
 ExecStart=/sbin/ip -4 addr show bat0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}' | /usr/sbin/alfred -s 65
 
