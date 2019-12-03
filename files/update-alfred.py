@@ -19,4 +19,4 @@ data = {
     'role': role
 }
 
-os.system('alfed -s 64 ' + json.dumps(data))
+os.system('alfred -s 64 ' + json.dumps(data))
