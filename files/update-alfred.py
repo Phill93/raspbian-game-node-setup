@@ -6,7 +6,7 @@ import json
 import os
 
 hostname = socket.gethostname()
-ip = ni.ifaddressesw('bat0')[2][0]['addr']
+ip = ni.ifaddresses('bat0')[2][0]['addr']
 
 if 'eth0' in ni.interfaces():
     role = "border"
