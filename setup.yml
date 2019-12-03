@@ -130,7 +130,26 @@
           node_name: "vernemq@{{ ansible_bat0.ipv4.address }}"
           cookie: "Kekse"
 
-  - hosts: border
+      - name: Install vernemq service file
+        copy:
+          src: "files/{{ item }}"
+          dest: "/etc/systemd/system/{{ item }}"
+          owner: root
+          group: root
+          mode: 0644
+        with_items:
+          - vernemq.service
+
+      - name: Reread systemd files
+        systemd:
+          daemon_reload: yes
+
+      - name: Enable metadata timer
+        systemd:
+          name: vernemq.timer
+          enabled: yes
+
+  - hosts: none
     become: true
     tags:
       - dhcpd
@@ -144,3 +163,15 @@
           mode: 0644
         vars:
           blubb: []
+  
+  - host: localhost
+    become: true
+    tags:
+      - finish
+    tasks:
+      - name: Disable firstboot service
+        service:
+          name: first-boot
+          enabled: no
+      - name: Reboot
+        reboot:

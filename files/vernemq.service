@@ -1,0 +1,12 @@
+[Unit]
+Description=vernemq mqtt cluster
+After=network.service
+
+[Service]
+Type=forking
+ExecStart=/opt/raspbian-game-node-setup/files/manage-vernemq.py start
+ExecStop=/opt/raspbian-game-node-setup/files/manage-vernemq.py stop
+PIDFile=/var/run/vernemq/vernemq.pid
+
+[Install]
+WantedBy=multi-user.target
