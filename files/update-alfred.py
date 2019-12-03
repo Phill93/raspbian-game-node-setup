@@ -3,7 +3,7 @@
 import socket
 import netifaces as ni
 import json
-import os
+from subprocess import check_output
 
 hostname = socket.gethostname()
 ip = ni.ifaddresses('bat0')[2][0]['addr']
@@ -19,4 +19,4 @@ data = {
     'role': role
 }
 
-os.system('alfred -s 64 ' + json.dumps(data))
+check_output(["alfred", "-s 64"], stdin=json.dumps(data))
