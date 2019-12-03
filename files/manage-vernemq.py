@@ -9,19 +9,24 @@ from pathlib import Path
 data = json.loads(subprocess.run(["alfred-json", "-r 64"], capture_output=True).stdout)
 discovery_node = None
 
-for node in data:
-    if node['discovery']:
-        discovery_node = node['ipaddr']
+for key, value in data.items():
+    if value['discovery']:
+        print("Found discovery node: %%", value['hostname'])
+        discovery_node = value['ipaddr']
         break
 
 if discovery_node is None:
+    print("No discovery node found. Waiting...")
     time.sleep(1)
     time.sleep(random.randrange(1,1000)/10)
-    for node in data:
-        if node['discovery']:
-            discovery_node = node['ipaddr']
+    data = json.loads(subprocess.run(["alfred-json", "-r 64"], capture_output=True).stdout)
+    for key, value in data.items():
+        if value['discovery']:
+            print("Found discovery node: %%", value['hostname'])
+            discovery_node = value['ipaddr']
             break
     if discovery_node is None:
+        print("No discovery node found. I am the new one!")
         Path('/run/discovery').touch()
         subprocess.run(["systemctl", "start", "update-alfred.service"])
         discovery_node = "self"
@@ -29,4 +34,5 @@ if discovery_node is None:
 subprocess.run(["vernemq", "start"])
 
 if discovery_node != "self":
+    print("Joining the cluster with discovery node %%", discovery_node)
     subprocess.run(["vmp-admin", "cluster", "join", "discovery-node=vernemq@" + discovery_node])
