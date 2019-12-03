@@ -3,8 +3,7 @@ Description=Update data about the node in A.L.F.R.E.D.
 
 [Service]
 Type=oneshot
-ExecStart=/bin/sh -c '/bin/hostname | tr -d \'\n\' | /usr/sbin/alfred -s 64'
-ExecStart=/bin/sh -c '/sbin/ip -4 addr show bat0 | grep -oP \'(?<=inet\s)\d+(\.\d+){3}\' | tr -d \'\n\' | /usr/sbin/alfred -s 65'
+ExecStart=/opt/raspbian-game-node-setup/file/update-alfred.py
 
 [Install]
 WantedBy=multi-user.target
