@@ -35,4 +35,4 @@ subprocess.run(["vernemq", "start"])
 
 if discovery_node != "self":
     print("Joining the cluster with discovery node %%", discovery_node)
-    subprocess.run(["vmp-admin", "cluster", "join", "discovery-node=vernemq@" + discovery_node])
+    subprocess.run(["vmq-admin", "cluster", "join", "discovery-node=vernemq@" + discovery_node])
