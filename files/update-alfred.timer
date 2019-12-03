@@ -3,7 +3,7 @@ Description=Timer for the update-alfred.service
 Wants=alfred.service
 
 [Timer]
-OnBootSec=0min
+OnBootSec=1min
 OnUnitActiveSec=5min
 Unit=update-alfred.service
 
