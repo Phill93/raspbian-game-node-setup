@@ -13,7 +13,7 @@ for node in data:
         discovery_node = node['ipaddr']
         break
 
-if not discovery_node:
+if discovery_node is None:
     time.sleep(1)
     time.sleep(random.randrange(1,1000)/10)
     for node in data:
