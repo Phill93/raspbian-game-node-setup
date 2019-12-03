@@ -1,5 +1,6 @@
 [Unit]
 Description=Timer for the update-alfred.service
+After=alfred.service
 
 [Timer]
 OnBootSec=0min

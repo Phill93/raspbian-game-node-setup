@@ -1,10 +1,9 @@
 [Unit]
 Description=Update data about the node in A.L.F.R.E.D.
-After=alfred.service
 
 [Service]
 Type=oneshot
-ExecStart=/opt/raspbian-game-node-setup/file/update-alfred.py
+ExecStart=/opt/raspbian-game-node-setup/files/update-alfred.py
 
 [Install]
 WantedBy=multi-user.target
