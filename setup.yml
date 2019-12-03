@@ -164,7 +164,7 @@
         vars:
           blubb: []
   
-  - host: localhost
+  - hosts: localhost
     become: true
     tags:
       - finish
