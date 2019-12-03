@@ -33,5 +33,5 @@ data = {
 
 process = subprocess.Popen(["alfred", "-s 64"], stdin=subprocess.PIPE, encoding='utf-8')
 
-process.stdin.write(json.dumps(data).encode())
+process.stdin.write(json.dumps(data))
 process.stdin.close()
