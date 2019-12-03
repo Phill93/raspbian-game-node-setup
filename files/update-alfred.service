@@ -1,5 +1,6 @@
 [Unit]
 Description=Update data about the node in A.L.F.R.E.D.
+Wants=alfred.service
 
 [Service]
 Type=oneshot
