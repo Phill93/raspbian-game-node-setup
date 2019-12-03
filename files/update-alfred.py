@@ -20,7 +20,7 @@ if os.path.exists("/run/discovery"):
 else:
     discovery = False
 
-model = open("/sys/firmware/devicetree/base/model").read()
+model = open("/sys/firmware/devicetree/base/model").read().rstrip('\0')
 
 data = {
     'hostname': hostname,
