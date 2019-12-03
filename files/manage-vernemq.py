@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 
 data = json.loads(subprocess.run(["alfred-json", "-r 64"], capture_output=True).stdout)
+discovery_node = None
 
 for node in data:
     if node['discovery']:
@@ -20,7 +21,7 @@ if discovery_node is None:
         if node['discovery']:
             discovery_node = node['ipaddr']
             break
-    if not discovery_node:
+    if discovery_node is None:
         Path('/run/discovery').touch()
         subprocess.run(["systemctl", "start", "update-alfred.service"])
         discovery_node = "self"
